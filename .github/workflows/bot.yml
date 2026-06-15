@@ -11,8 +11,12 @@ jobs:
     timeout-minutes: 350
     
     steps:
-      - name: Checkout Repository
+      # ১. এই অংশটিই আপনার প্রাইভেট মাস্টার গিটহাব থেকে কোড ধার করে আনবে!
+      - name: Fetch Code from Master Repo
         uses: actions/checkout@v4
+        with:
+          repository: arifyoutubeshorts-max/Trick-A4IF-Master
+          token: ${{ secrets.MASTER_PAT }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,6 +28,7 @@ jobs:
           npm init -y
           npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth telegraf fs-extra node-fetch@2
 
+      # ২. ধার করা কোডটি এখন রান করবে
       - name: Ignite TRICK A4IF Worker
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
