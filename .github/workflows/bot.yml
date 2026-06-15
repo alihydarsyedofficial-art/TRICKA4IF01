@@ -1,0 +1,30 @@
+name: TRICK A4IF WORKER BOT
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */5 * * *'
+
+jobs:
+  run-worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Initialize & Install Core Dependencies
+        run: |
+          npm init -y
+          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth telegraf fs-extra node-fetch@2
+
+      - name: Ignite TRICK A4IF Worker
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        run: node engine.obfuscated.js
