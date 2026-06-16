@@ -3,7 +3,7 @@ name: TRICK A4IF WORKER BOT
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */5 * * *'
+    - cron: '0 */5 * * *' # প্রতি ৫ ঘণ্টা পর পর অটোমেটিক রান হবে
 
 jobs:
   run-worker:
@@ -11,7 +11,6 @@ jobs:
     timeout-minutes: 350
     
     steps:
-      # ১. এই অংশটিই আপনার প্রাইভেট মাস্টার গিটহাব থেকে কোড ধার করে আনবে!
       - name: Fetch Code from Master Repo
         uses: actions/checkout@v4
         with:
@@ -23,13 +22,13 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Initialize & Install Core Dependencies
+      - name: Initialize Dependencies
         run: |
           npm init -y
           npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth telegraf fs-extra node-fetch@2
 
-      # ২. ধার করা কোডটি এখন রান করবে
-      - name: Ignite TRICK A4IF Worker
+      # এখানে CLIENT_ID দিয়ে মাস্টার/ওয়ার্কার ডিটেক্ট হবে
+      - name: Ignite TRICK A4IF Engine
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
         run: node engine.obfuscated.js
